@@ -87,6 +87,8 @@ function App() {
     //   );
     // }
 
+    // return filteredUsers;
+
     // return sorting === SortBy.COUNTRY
     //   ? filteredUsers.toSorted((a, b) => {
     //       return a.location.country.localeCompare(b.location.country);
