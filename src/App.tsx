@@ -3,6 +3,17 @@ import "./App.css";
 import { UsersList } from "./components/UsersList";
 import { SortBy, type User } from "./types.d";
 
+const fetchUsers = async (page: number) => {
+  return await fetch(
+    `https://randomuser.me/api?results=10&seed=litoos11&page=${page}`
+  )
+    .then(async (response) => {
+      if (!response.ok) throw new Error("Error en la petición");
+      return await response.json();
+    })
+    .then((json) => json.results);
+};
+
 function App() {
   const [users, setUsers] = useState<User[]>([]);
   const [showColors, setShowColors] = useState(false);
@@ -41,17 +52,11 @@ function App() {
     setLoading(true);
     setError(false);
 
-    fetch(
-      `https://randomuser.me/api?results=10&seed=litoos11&page=${currentPage}`
-    )
-      .then(async (response) => {
-        if (!response.ok) throw new Error("Error en la petición");
-        return await response.json();
-      })
-      .then((json) => {
+    fetchUsers(currentPage)
+      .then((users) => {
         setUsers((prevUsers) => {
-          const newUsers = prevUsers.concat(json.results);
-          originalUsers.current = json.results;
+          const newUsers = prevUsers.concat(users);
+          originalUsers.current = users;
           return newUsers;
         });
       })
